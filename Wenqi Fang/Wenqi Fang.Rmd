@@ -83,4 +83,64 @@ accuracy.pred1=87.66%;
 accuracy.pred2=73.97%.
 
 
+## another try
 
+
+```{r}
+library(caret)
+```
+
+```{r}
+intraining<-createDataPartition(kddata$label,p=.7,list = F)
+training<-kddata[intraining,]
+testing<-kddata[-intraining,]
+```
+
+
+```{r}
+fitcontrol<-trainControl(method = "repeatedcv",number = 10,repeats = 10,classProbs = TRUE)
+```
+
+
+
+
+```{r}
+library(klaR)
+training$label<-as.factor(training$label)
+nbfit<-train(label~.,data=training,method="nb",trcontrol=fitcontrol,metric="ROC")
+nbfit
+```
+
+
+
+```{r}
+install.packages("gmodels")
+```
+
+```{r}
+library(gmodels)
+```
+
+
+
+
+```{r}
+library(factoextra)
+cor(kdd.train)
+pca=princomp(kdd.train,cor=F,scores=T)
+screeplot(pca,type="lines")
+```
+
+```{r}
+pca$loadings
+```
+
+```{r}
+jitter(kdd.train.unlabel$src_bytes,amount=0)
+jitter(kdd.train.unlabel$dst_bytes,amount=0)
+jitter(kdd.test$src_bytes,amount=0)
+jitter(kdd.test$dst_bytes,amount=0)
+jitter(kdd.train.unlabel$count,amount=0)
+jitter(kdd.test$count,amount=0)
+kdd.test.pred<-knn(train=kdd.train.unlabel,test=kdd.test,cl=kdd.train.labels,k=1,use.all = F)
+```
