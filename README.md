@@ -26,7 +26,7 @@ The report takes the following structure:
   
 With html output of the Rmd content included for convenience.
 
-# Requirements:
+## Requirements:
 
 Requirements for the Rmd files are given within each script, or can be installed in advance using:
 
@@ -42,6 +42,10 @@ Requirements for the Python code is given in ; to install, in a virtual environm
 
 Our working is shown in our own directories,
 
-  Wenqi Fang.Rmd
-  Xiao Zhang.ipynb
-  Wenqi Fang wrote the R analysis, Xiao Zhang wrote the Python analysis.
+  Junbei Chen/
+  
+  Xiao Zhang/
+  
+  Wenqi Fang/
+  
+Wenqi Fang wrote the R analysis, Xiao Zhang wrote the Python analysis.
