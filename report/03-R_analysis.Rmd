@@ -1,5 +1,5 @@
 ---
-title: "dst_assessment1"
+title: "dst_assessment1_naiveBayes"
 author: "Wenqi Fang"
 date: "19/11/2020"
 output: html_document
@@ -9,6 +9,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+Naive Bayes classifiers are a family of simple "probabilistic classifiers" based on applying Bayes' theorem with strong independence assumptions between the features. 
 
 
 ## R part of assessment
@@ -20,18 +22,20 @@ required libraries:
 ```{r}
 if (!require("e1071")) install.packages("e1071")
 if (!require("gmodels")) install.packages("gmodels")
+if (!require("caret")) install.packages("caret")
 library(e1071) # for training the data
 library(gmodels) # For evaluating the model performance
+library(caret) # For evaluating the model performance
 ```
 
 
 load and name the data:
 ```{r}
-kdd.train <- read.csv(file="D:\\SSS\\MSC\\dst\\data\\ass1\\new\\new\\kddcup99_train.csv", header=F)
-kdd.test1 <- read.csv(file="D:\\SSS\\MSC\\dst\\data\\ass1\\new\\new\\kddcup99_test.csv", header=F)
-kdd.test2 <- read.csv(file="D:\\SSS\\MSC\\dst\\data\\ass1\\new\\new\\kddcup99_test2.csv", header=F)
+kdd.train <- read.csv(file="D:\\SSS\\MSC\\dst\\data\\ass1\\new\\new\\kddcup99_train.csv", header=F) #training data
+kdd.test1 <- read.csv(file="D:\\SSS\\MSC\\dst\\data\\ass1\\new\\new\\kddcup99_test.csv", header=F) #testing data
+kdd.test2 <- read.csv(file="D:\\SSS\\MSC\\dst\\data\\ass1\\new\\new\\kddcup99_test2.csv", header=F) #another testing data for more realistic 
 kddnames<-read.csv(file="D:\\SSS\\MSC\\dst\\data\\kddcup.names.txt")
-colnames(kdd.train)=c(kddnames[,1],"label")
+colnames(kdd.train)=c(kddnames[,1],"label") 
 colnames(kdd.test1)=c(kddnames[,1],"label")
 colnames(kdd.test2)=c(kddnames[,1],"label")
 ```
@@ -41,10 +45,11 @@ coverts label column to factor:
 kdd.train$label<-as.factor(kdd.train$label)
 kdd.test1$label<-as.factor(kdd.test1$label)
 kdd.test2$label<-as.factor(kdd.test2$label)
-kdd.train
-kdd.test1
-kdd.test2
+head(kdd.train)
+head(kdd.test1)
+head(kdd.test2)
 ```
+
 
 
 ## train a model on data
@@ -52,13 +57,13 @@ kdd.test2
 ```{r}
 model<-naiveBayes(label~., data=kdd.train) #use the naivebayes() function to train data
 pred1<-predict(model,kdd.test1[-42]) #classify test data
-pred1
+head(pred1)
 ```
 
-classify the second test data:
+classify the second test data :
 ```{r}
 pred2<-predict(model,kdd.test2[-42])
-pred2
+head(pred2)
 ```
 
 
@@ -68,6 +73,11 @@ pred2
 CrossTable(x=kdd.test1$label,y=pred1)
 CrossTable(x=kdd.test2$label,y=pred2)
 ```
+evaluate the model performance by confusionmatrix
+```{r}
+confusionMatrix(pred1,kdd.test1$label)
+confusionMatrix(pred2,kdd.test2$label)
+```
 
-
-
+accuracy.pred1=87.66%;
+accuracy.pred2=73.97%.
